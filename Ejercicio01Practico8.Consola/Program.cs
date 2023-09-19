@@ -1,4 +1,5 @@
 ﻿using ConsoleTables;
+using Ejercicio01Practico8.Utilidades;
 
 namespace Ejercicio01Practico8.Consola
 {
@@ -6,13 +7,19 @@ namespace Ejercicio01Practico8.Consola
     {
         const double MIN_TEMPERATURA = -10;
         const double MAX_TEMPERATURA = 24;
+        enum Orden
+        {
+            Ascendente=1,
+            Descendente
+        }
         static void Main(string[] args)
         {
             double[] temperaturas = new double[7];
+            bool seguir = true;
             do
             {
                 MostrarMenu();
-                int opcionSeleccionada = PedirIntEnRango("Seleccione:", 1, 9);
+                int opcionSeleccionada =IngresoDatos.PedirIntEnRango("Seleccione:", 1, 9);
                 switch (opcionSeleccionada)
                 {
                     case 1:
@@ -34,76 +41,119 @@ namespace Ejercicio01Practico8.Consola
                         MostrarInferioresAlPromedio(temperaturas);
                         break;
                     case 7:
-                        OrdenarAsc(temperaturas);
+                        Ordenar(temperaturas);
                         break;
                     case 8:
-                        OrdenarDesc(temperaturas);
+                        Ordenar(temperaturas,Orden.Descendente);
                         break;
                     case 9:
-                        
+                        seguir = false;
                         break;
 
                 }
-            } while (true);
+            } while (seguir);
+            Console.WriteLine("Fin de la Apliación");
         }
-
-        private static void OrdenarDesc(double[] temperaturas)
+        private static void Ordenar(double[] temperaturas, Orden orden = Orden.Ascendente)
         {
             var arrayCopia = new double[temperaturas.Length];
             temperaturas.CopyTo(arrayCopia, 0);
-            var arrayOrdenado = OrdenarArrayDesc(arrayCopia);
+            var arrayOrdenado = OrdenarArray(arrayCopia,orden);
             Console.Clear();
             Console.WriteLine("Array Ordenado de Mayor a Menor");
             ListarTemperaturas(arrayOrdenado);
-            TareaFinalizada("Array ordenado desc...");
-        }
+            TareaFinalizada("Array ordenado ...");
 
-        private static double[] OrdenarArrayDesc(double[] arrayCopia)
+        }
+        //private static void OrdenarDesc(double[] temperaturas)
+        //{
+        //    var arrayCopia = new double[temperaturas.Length];
+        //    temperaturas.CopyTo(arrayCopia, 0);
+        //    var arrayOrdenado = OrdenarArrayDesc(arrayCopia);
+        //    Console.Clear();
+        //    Console.WriteLine("Array Ordenado de Mayor a Menor");
+        //    ListarTemperaturas(arrayOrdenado);
+        //    TareaFinalizada("Array ordenado desc...");
+        //}
+        //private static void OrdenarAsc(double[] temperaturas)
+        //{
+        //    var arrayCopia = new double[temperaturas.Length];
+        //    temperaturas.CopyTo(arrayCopia, 0);
+        //    var arrayOrdenado = OrdenarArrayAsc(arrayCopia);
+        //    Console.Clear();
+        //    Console.WriteLine("Array Ordenado de Menor a Mayor");
+        //    ListarTemperaturas(arrayOrdenado);
+        //    TareaFinalizada("Array ordenado asc...");
+
+        //}
+        private static double[] OrdenarArray(double[] arrayCopia, Orden orden=Orden.Ascendente)
         {
             for (int i = 0; i < arrayCopia.Length - 1; i++)
             {
                 for (int j = i + 1; j < arrayCopia.Length; j++)
                 {
-                    if (arrayCopia[i] < arrayCopia[j])
+                    if (orden==Orden.Ascendente)
                     {
-                        var aux = arrayCopia[i];
-                        arrayCopia[i] = arrayCopia[j];
-                        arrayCopia[j] = aux;
+                        if (arrayCopia[i] > arrayCopia[j])
+                        {
+                            CambiarValores(ref arrayCopia[i], ref arrayCopia[j]);
+                            //var aux = arrayCopia[i];
+                            //arrayCopia[i] = arrayCopia[j];
+                            //arrayCopia[j] = aux;
+                        }
                     }
-                }
-            }
-            return arrayCopia;
-
-        }
-
-        private static void OrdenarAsc(double[] temperaturas)
-        {
-            var arrayCopia=new double[temperaturas.Length];
-            temperaturas.CopyTo(arrayCopia, 0);
-            var arrayOrdenado = OrdenarArrayAsc(arrayCopia);
-            Console.Clear();
-            Console.WriteLine("Array Ordenado de Menor a Mayor");
-            ListarTemperaturas(arrayOrdenado);
-            TareaFinalizada("Array ordenado asc...");
-
-        }
-
-        private static double[] OrdenarArrayAsc(double[] arrayCopia)
-        {
-            for (int i = 0; i < arrayCopia.Length-1; i++)
-            {
-                for (int j =i+1; j < arrayCopia.Length; j++)
-                {
-                    if (arrayCopia[i] > arrayCopia[j])
+                    else
                     {
-                        var aux = arrayCopia[i];
-                        arrayCopia[i] = arrayCopia[j];
-                        arrayCopia[j] = aux;
+                        if (arrayCopia[i] < arrayCopia[j])
+                        {
+                            CambiarValores(ref arrayCopia[i], ref arrayCopia[j]);
+                            //var aux = arrayCopia[i];
+                            //arrayCopia[i] = arrayCopia[j];
+                            //arrayCopia[j] = aux;
+                        }
                     }
                 }
             }
             return arrayCopia;
         }
+        private static void CambiarValores(ref double a, ref double b)
+        {
+            var aux = a;
+            a = b;
+            b = aux;
+        }
+        //private static double[] OrdenarArrayDesc(double[] arrayCopia)
+        //{
+        //    for (int i = 0; i < arrayCopia.Length - 1; i++)
+        //    {
+        //        for (int j = i + 1; j < arrayCopia.Length; j++)
+        //        {
+        //            if (arrayCopia[i] < arrayCopia[j])
+        //            {
+        //                var aux = arrayCopia[i];
+        //                arrayCopia[i] = arrayCopia[j];
+        //                arrayCopia[j] = aux;
+        //            }
+        //        }
+        //    }
+        //    return arrayCopia;
+        //}
+        //private static double[] OrdenarArrayAsc(double[] arrayCopia)
+        //{
+        //    for (int i = 0; i < arrayCopia.Length-1; i++)
+        //    {
+        //        for (int j =i+1; j < arrayCopia.Length; j++)
+        //        {
+        //            if (arrayCopia[i] > arrayCopia[j])
+        //            {
+        //                var aux = arrayCopia[i];
+        //                arrayCopia[i] = arrayCopia[j];
+        //                arrayCopia[j] = aux;
+        //            }
+        //        }
+        //    }
+        //    return arrayCopia;
+        //}
 
         private static void MostrarInferioresAlPromedio(double[] temperaturas)
         {
@@ -203,14 +253,14 @@ namespace Ejercicio01Practico8.Consola
                 ListarTemperaturas(temperaturas);
 
                 var index =
-                    PedirIntEnRango("Ingrese un índice de elemento:", 1, temperaturas.Length);
+                    IngresoDatos.PedirIntEnRango("Ingrese un índice de elemento:", 1, temperaturas.Length);
                 Console.WriteLine($"Valor anterior:{temperaturas[index - 1]}");
 
                 double nuevaTemperatura;
                 do
                 {
                     nuevaTemperatura =
-                    PedirDoubleEnRango("Ingrese nueva temperatura:",
+                    IngresoDatos.PedirDoubleEnRango("Ingrese nueva temperatura:",
                             MIN_TEMPERATURA, MAX_TEMPERATURA);
                     if (Existe(nuevaTemperatura, temperaturas))
                     {
@@ -223,7 +273,7 @@ namespace Ejercicio01Practico8.Consola
                 } while (true);
                 temperaturas[index - 1] = nuevaTemperatura;
                 var sigueModificando =
-                    PedirCharEnRango("¿Desea modificar otro?(S/N)", 's', 'n');
+                    IngresoDatos.PedirCharEnRango("¿Desea modificar otro?(S/N)", 's', 'n');
                 if (sigueModificando == "N")
                 {
                     break;
@@ -233,25 +283,6 @@ namespace Ejercicio01Practico8.Consola
             TareaFinalizada("Modificación finalizada...");
         }
 
-        private static string PedirCharEnRango(string mensaje, char char1, char char2)
-        {
-            char cX;
-            do
-            {
-
-                Console.Write(mensaje);
-                var tecla = Console.ReadKey();
-                if (tecla.KeyChar.ToString().ToUpper() == char1.ToString().ToUpper()
-                    || tecla.KeyChar.ToString().ToUpper() == char2.ToString().ToUpper())
-                {
-                    cX = tecla.KeyChar;
-                    break;
-                }
-                Console.WriteLine("Tecla presionada no válida");
-            } while (true);
-            return cX.ToString().ToUpper();
-
-        }
 
         private static void ListarTemperaturas(double[] temperaturas)
         {
@@ -279,7 +310,7 @@ namespace Ejercicio01Practico8.Consola
                 do
                 {
                     tempIngresada =
-                        PedirDoubleEnRango("Ingrese una temperatura:", MIN_TEMPERATURA, MAX_TEMPERATURA);
+                        IngresoDatos.PedirDoubleEnRango("Ingrese una temperatura:", MIN_TEMPERATURA, MAX_TEMPERATURA);
                     if (Existe(tempIngresada, temperaturas))
                     {
                         Console.WriteLine("Temperatura existente!!!");
@@ -328,85 +359,6 @@ namespace Ejercicio01Practico8.Consola
             Console.WriteLine("8-Mostrar Ordenado DESC ");
             Console.WriteLine("9-Salir");
 
-        }
-        private static string PedirString(string mensaje)
-        {
-            string? cX;
-            do
-            {
-
-                Console.Write(mensaje);
-                cX = Console.ReadLine();
-                if (!string.IsNullOrEmpty(cX) || !string.IsNullOrWhiteSpace(cX))
-                {
-                    break;
-                }
-                Console.WriteLine("No ingresó nada por la consola");
-            } while (true);
-            return cX;
-        }
-        private static int PedirInt(string mensaje)
-        {
-            int nro;
-            string cX;
-            do
-            {
-                cX = PedirString(mensaje);
-                if (int.TryParse(cX, out nro))
-                {
-                    break;
-                }
-                Console.WriteLine("Número no válido");
-            } while (true);
-            return nro;
-        }
-        private static int PedirIntEnRango(string mensaje, int valorMenor, int valorMayor)
-        {
-            bool error = true;
-            int valorInt;
-            string? cX;
-            do
-            {
-                cX = PedirString(mensaje);
-                if (!int.TryParse(cX, out valorInt))
-                {
-                    Console.WriteLine("Error al intentar ingresar un valor entero");
-                }
-                else if (valorInt < valorMenor || valorInt > valorMayor)
-                {
-                    Console.WriteLine($"ERROR valor fuera del rango permitido {valorMenor} y {valorMayor}");
-                }
-                else
-                {
-                    error = false;
-                }
-            } while (error);
-
-            return valorInt;
-        }
-        private static double PedirDoubleEnRango(string mensaje, double valorMenor, double valorMayor)
-        {
-            bool error = true;
-            double valorDouble;
-            string? cX;
-            do
-            {
-                cX = PedirString(mensaje);
-                if (!double.TryParse(cX, out valorDouble))
-                {
-                    Console.WriteLine("Error al intentar ingresar un valor entero");
-                }
-                else if (valorDouble < valorMenor || valorDouble > valorMayor)
-                {
-                    Console.WriteLine($"ERROR valor fuera del rango permitido {valorMenor} y {valorMayor}");
-                }
-                else
-                {
-                    error = false;
-                }
-            } while (error);
-
-            return valorDouble;
         }
 
     }

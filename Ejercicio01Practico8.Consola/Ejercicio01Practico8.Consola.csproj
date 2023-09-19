@@ -11,4 +11,8 @@
     <PackageReference Include="ConsoleTables" Version="2.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Ejercicio01Practico8.Utilidades\Ejercicio01Practico8.Utilidades.csproj" />
+  </ItemGroup>
+
 </Project>
